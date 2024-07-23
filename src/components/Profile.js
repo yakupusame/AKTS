@@ -1,34 +1,40 @@
 // src/components/Profile.js
-import React, { useState } from 'react';
-import { auth } from '../firebase';
+import React, { useState, useEffect } from 'react';
+import { firestore } from './firebase'; // Adjust the import path
+import { doc, getDoc } from 'firebase/firestore';
+import { auth } from './firebase'; // Ensure auth is imported if you need the current user's UID
 
 const Profile = () => {
-  const [profile, setProfile] = useState({
-    name: '',
-    expertise: '',
-    bio: '',
-  });
+  const [profile, setProfile] = useState(null);
 
-  const handleChange = (e) => {
-    setProfile({
-      ...profile,
-      [e.target.name]: e.target.value,
-    });
-  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (auth.currentUser) {
+        const profileDoc = doc(firestore, 'profiles', auth.currentUser.uid);
+        const profileSnapshot = await getDoc(profileDoc);
+        if (profileSnapshot.exists()) {
+          setProfile(profileSnapshot.data());
+        } else {
+          console.log('No such document!');
+        }
+      }
+    };
 
-  const handleSave = () => {
-    const user = auth.currentUser;
-    if (user) {
-      // Save profile data to your backend or Firebase Firestore
-    }
-  };
+    fetchProfile();
+  }, []);
 
   return (
     <div>
-      <input name="name" placeholder="Name" onChange={handleChange} />
-      <input name="expertise" placeholder="Expertise" onChange={handleChange} />
-      <textarea name="bio" placeholder="Bio" onChange={handleChange}></textarea>
-      <button onClick={handleSave}>Save</button>
+      <h2>Profile</h2>
+      {profile ? (
+        <div>
+          <p>Name: {profile.name}</p>
+          <p>Email: {profile.email}</p>
+          {/* Display other profile information as needed */}
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };
