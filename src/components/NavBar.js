@@ -1,14 +1,17 @@
 import React from 'react';
-import './NavBar.css';  // Ensure this path matches the location of NavBar.css
+import { Link } from 'react-router-dom';
+import './NavBar.css'; // Ensure the CSS file exists and is correctly named
 
-function NavBar() {
+const NavBar = () => {
   return (
-    <div className="navbar">
-      <a href="/">Home</a>
-      <a href="/signup">Sign Up</a>
-      <a href="/signin">Sign In</a>
-    </div>
+    <nav>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/signin">Sign In</Link></li>
+        <li><Link to="/signup">Sign Up</Link></li>
+      </ul>
+    </nav>
   );
-}
+};
 
 export default NavBar;

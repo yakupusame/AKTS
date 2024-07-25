@@ -1,17 +1,20 @@
+// src/AppRouter.js
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Home from '../components/Home';
-import SignUp from '../components/SignUp';
-import SignIn from '../components/SignIn';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
 
-function AppRouter() {
+const AppRouter = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/signin" element={<SignIn />} />
-    </Routes>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/signin" component={SignIn} />
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default AppRouter;
