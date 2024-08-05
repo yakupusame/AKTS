@@ -1,6 +1,6 @@
 // src/hooks/useAuth.js
-import { useEffect, useState } from 'react';
-import { auth } from '../firebase';
+import { useState, useEffect } from 'react';
+import { auth } from '../firebase'; // Import auth from firebase
 import { onAuthStateChanged } from 'firebase/auth';
 
 const useAuth = () => {
@@ -10,8 +10,7 @@ const useAuth = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
-
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
   return user;

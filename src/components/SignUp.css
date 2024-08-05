@@ -1,0 +1,10 @@
+/* Valid CSS example for SignUp component */
+.sign-up {
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .error {
+    color: red;
+  }
+  

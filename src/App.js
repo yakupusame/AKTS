@@ -3,25 +3,32 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
-import NavBar from './components/NavBar'; // Import NavBar component
+import Profile from './components/Profile';
+import SearchComponent from './SearchComponent';
+import NavBar from './components/NavBar';
 import { auth } from './firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import './styles.css';
 
-const App = () => {
-  const [user] = useAuthState(auth);
+function App() {
+  const [user, loading] = useAuthState(auth);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Router>
-      <div>
-        {user && <NavBar />} {/* Show NavBar only if user is logged in */}
-        <Routes>
-          <Route path="/" element={user ? <Home /> : <Navigate to="/signin" />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-      </div>
+      <NavBar user={user} />
+      <Routes>
+        <Route path="/" element={user ? <Home /> : <Navigate to="/signin" />} />
+        <Route path="/signin" element={!user ? <SignIn /> : <Navigate to="/" />} />
+        <Route path="/signup" element={!user ? <SignUp /> : <Navigate to="/" />} />
+        <Route path="/profile" element={user ? <Profile /> : <Navigate to="/signin" />} />
+        <Route path="/search" element={user ? <SearchComponent /> : <Navigate to="/signin" />} />
+      </Routes>
     </Router>
   );
-};
+}
 
 export default App;
